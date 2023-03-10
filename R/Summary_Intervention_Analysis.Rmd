@@ -1,0 +1,1782 @@
+---
+title: "Analysis Combined Cleaned"
+author: "Gustavo Reyes"
+date: "1/21/2021"
+output: html_document
+---
+
+Read me: 
+
+This is the main model that runs the interventions and compiles the intervention tables. In order to get the results you want, you needs to change the number of weeks in the Input_Static.R Document. Once that is done the model should run with no issues and there is no need to change other inputs. 
+Change the pathfolder input below and select the folder in which you want the information for this run to be save. Please just make a new folder in the /R folder. 
+There are 13 interventions. Each intervention will take around 45 mins to run 100 weeks so make the math based on that. The functions powering some of the section are in Functions_Full_Analysis. Change accordingly. 
+
+### Use the file Scenario Analysis-Published.Rdata.
+
+```{r}
+
+#Setting Working Directory-------------------------------------
+setwd("C:/Users/gareyes3/Documents/GitHub/Share-Table-QMRA/R") 
+setwd("C:/Users/Gustavo Reyes/Documents/GitHubFiles/Share Table QMRA/Share-Table-QMRA/R") 
+
+
+#setwd("G:/Share Table QMRA/Share-Table-QMRA/R")
+pathfolder<-"DoseReponse5-27"
+```
+
+```{r}
+#Opening Libary and Inputs-------------------------------------
+source("Util_Library.R")
+source("Functions_Full_Analysis.R")
+source("Util_FunctionFoodWaste.R")
+```
+
+
+#SHARE TABLE ON, No Interventions
+```{r}
+#Inputs and Source Files-------------------------------------
+
+
+#Inputs
+source("New_StudentLoop.R")
+source("Input_Static.R")
+source("Input_Functions.R")
+source("Util_DFFunctions.R")
+source("Util_DFWeekCreation.R")
+source("Util_Counter&Lists.R")
+#Functions
+source("Util_Functions.R")
+source("Util_CCFunctions2.R")
+source("Util_VisualFunctions.R")
+
+```
+
+```{r warning=TRUE}
+#Running Loop First:-------------------------------------
+start_time<-Sys.time()
+source("Main_Loops2.R")
+```
+
+```{r}
+#Summary DFs for Future-------------------------------------
+library(plyr)
+#Creating Data Frame of Consumed Items for all the products
+#Copy of Compiled Data Frame
+Individual_Analysis_Fr_CopON<-rbind.fill(List_Sens_Fr)
+Contaminations_ON<-Vector_Contaminations_In
+
+#Data Frame without repeats and Consumed Items
+ST_ON_Analysis<-Func_Asys_MainDF(SummaryList = List_Sens_Fr,FoodType = "Fruit")
+
+```
+
+#SHARE TABLE OFF, No Interventions
+
+
+```{r}
+#Inputs and Source Files-------------------------------------
+
+
+
+#Inputs
+source("New_StudentLoop.R")
+source("Input_Static.R")
+source("Input_Functions.R")
+source("Util_DFFunctions.R")
+source("Util_DFWeekCreation.R")
+source("Util_Counter&Lists.R")
+#Functions
+source("Util_Functions.R")
+source("Util_CCFunctions2.R")
+source("Util_VisualFunctions.R")
+
+#Share Table Toggle 
+  
+  #Include Share Table:
+  Share_Table_YN<-0
+  #NOTE: Turn off Re-Sharing and -ST to reservice too (next section)
+
+# Re-Sharing, Re-Service 
+
+  #Share Table to Service line after every Day # note turn in 1 if ST on
+  STtoReservice_YN<-0
+  #Re-Sharing of Share table items after every service # note turn in 1 is ST on
+  Resharing_YN<-0
+
+```
+
+```{r warning=TRUE}
+#Running Loop First:-------------------------------------
+start_time<-Sys.time()
+source("Main_Loops2.R")
+```
+
+```{r}
+#Summary DFs for Future.------------------------------------- 
+
+#Creating Data Frame of Consumed Items for all the products
+#Copy of Compiled Data Frame
+Individual_Analysis_Fr_CopOFF<-rbind.fill(List_Sens_Fr)
+Contaminations_OFF<-Vector_Contaminations_In
+
+#Data Frame without repeats and Consumed Items
+ST_OFF_Analysis<-Func_Asys_MainDF(SummaryList = List_Sens_Fr,FoodType = "Fruit")
+
+```
+
+#ST ON Wash ON, Wrapp OFF
+```{r}
+#Inputs and Source Files-------------------------------------
+
+start_time<-Sys.time()
+
+#Inputs
+source("Input_Static.R")
+source("Input_Functions.R")
+source("Util_DFFunctions.R")
+source("Util_DFWeekCreation.R")
+source("Util_Counter&Lists.R")
+#Functions
+source("Util_Functions.R")
+source("Util_CCFunctions2.R")
+source("Util_VisualFunctions.R")
+
+#Changing Inputs for Washing on, Wraaping off. 
+  #Washing Between Services
+  Wash_Between_Services<-0
+  #Wash Selection Table Fruit
+  Wash_Selection_YN_Fr<-1
+  #Wash Share Table Items
+  Wash_ST_YN_Fr<-1
+  
+#Changing Wrapping off:
+  #Wrapping Apples
+  Wrapping_Apples<-0
+```
+
+```{r warning=TRUE}
+#Running Loop First:-------------------------------------
+start_time<-Sys.time()
+source("Main_Loops2.R")
+```
+
+```{r}
+
+#Summary DFs for Future. -------------------------------------
+
+#Creating Data Frame of Consumed Items for all the products
+#Copy of Compiled Data Frame
+Individual_Analysis_Fr_CopONWash<-rbind.fill(List_Sens_Fr)
+Contaminations_ONWash<-Vector_Contaminations_In
+
+#Data Frame without repeats and Consumed Items
+ST_ONWash_Analysis<-Func_Asys_MainDF(SummaryList = List_Sens_Fr,FoodType = "Fruit")
+```
+
+#ST ON Wrapping ON
+
+Scenario where wrapping is on and washing is off
+```{r}
+#Inputs and Source Files-------------------------------------
+
+start_time<-Sys.time()
+
+#Inputs
+source("Input_Static.R")
+source("Input_Functions.R")
+source("Util_DFFunctions.R")
+source("Util_DFWeekCreation.R")
+source("Util_Counter&Lists.R")
+#Functions
+source("Util_Functions.R")
+source("Util_CCFunctions2.R")
+source("Util_VisualFunctions.R")
+
+#Changing Inputs for Washing off, Wraaping on. 
+  #Washing Between Services
+  Wash_Between_Services<-0
+  #Wash Selection Table Fruit
+  Wash_Selection_YN_Fr<-0
+  #Wash Share Table Items
+  Wash_ST_YN_Fr<-0
+  
+#Changing Wrapping off:
+  #Wrapping Apples
+  Wrapping_Apples<-1
+```
+
+```{r}
+#Running Loop again:-------------------------------------
+source("Main_Loops2.R")
+```
+
+```{r}
+#Summary DFs for Future. 
+
+#Creating Data Frame of Consumed Items for all the products
+#Copy of Compiled Data Frame
+Individual_Analysis_Fr_CopONWr<-rbind.fill(List_Sens_Fr)
+Contaminations_ONWr<-Vector_Contaminations_In
+
+#Data Frame without repeats and Consumed Items
+ST_ONWr_Analysis<-Func_Asys_MainDF(SummaryList = List_Sens_Fr,FoodType = "Fruit")
+```
+
+#ST OFF Wash ON, Wrapp OFF
+```{r}
+#Inputs and Source Files-------------------------------------
+
+start_time<-Sys.time()
+
+#Inputs
+source("Input_Static.R")
+source("Input_Functions.R")
+source("Util_DFFunctions.R")
+source("Util_DFWeekCreation.R")
+source("Util_Counter&Lists.R")
+#Functions
+source("Util_Functions.R")
+source("Util_CCFunctions2.R")
+source("Util_VisualFunctions.R")
+
+#Share Table Toggle 
+  
+  #Include Share Table:
+  Share_Table_YN<-0
+  #NOTE: Turn off Re-Sharing and -ST to reservice too (next section)
+
+# Re-Sharing, Re-Service 
+
+  #Share Table to Service line after every Day # note turn in 1 if ST on
+  STtoReservice_YN<-0
+  #Re-Sharing of Share table items after every service # note turn in 1 is ST on
+  Resharing_YN<-0
+
+#Changing Inputs for Washing on, Wraaping off. 
+  #Washing Between Services
+  Wash_Between_Services<-0
+  #Wash Selection Table Fruit
+  Wash_Selection_YN_Fr<-1
+  #Wash Share Table Items
+  Wash_ST_YN_Fr<-1
+  
+#Changing Wrapping off:
+  #Wrapping Apples
+  Wrapping_Apples<-0
+```
+
+```{r warning=TRUE}
+#Running Loop First:-------------------------------------
+start_time<-Sys.time()
+source("Main_Loops2.R")
+```
+
+```{r}
+#Summary DFs for Future.------------------------------------- 
+#Creating Data Frame of Consumed Items for all the products
+#Copy of Compiled Data Frame
+
+Individual_Analysis_Fr_CopOFFWash<-rbind.fill(List_Sens_Fr)
+Contaminations_OFFWash<-Vector_Contaminations_In
+
+#Data Frame without repeats and Consumed Items
+ST_OFFWash_Analysis<-Func_Asys_MainDF(SummaryList = List_Sens_Fr,FoodType = "Fruit")
+```
+
+#ST OFF Wrapping ON
+
+```{r}
+#Inputs and Source Files-------------------------------------
+# Source Files 
+start_time<-Sys.time()
+
+#Inputs
+source("Input_Static.R")
+source("Input_Functions.R")
+source("Util_DFFunctions.R")
+source("Util_DFWeekCreation.R")
+source("Util_Counter&Lists.R")
+#Functions
+source("Util_Functions.R")
+source("Util_CCFunctions2.R")
+source("Util_VisualFunctions.R")
+
+#Share Table Toggle 
+  
+  #Include Share Table:
+  Share_Table_YN<-0
+  #NOTE: Turn off Re-Sharing and -ST to reservice too (next section)
+
+# Re-Sharing, Re-Service 
+
+  #Share Table to Service line after every Day # note turn in 1 if ST on
+  STtoReservice_YN<-0
+  #Re-Sharing of Share table items after every service # note turn in 1 is ST on
+  Resharing_YN<-0
+
+#Changing Inputs for Washing off, Wraaping on. 
+  #Washing Between Services
+  Wash_Between_Services<-0
+  #Wash Selection Table Fruit
+  Wash_Selection_YN_Fr<-0
+  #Wash Share Table Items
+  Wash_ST_YN_Fr<-0
+  
+#Changing Wrapping off:
+  #Wrapping Apples
+  Wrapping_Apples<-1
+```
+
+```{r}
+#Running Loop again:-------------------------------------
+source("Main_Loops2.R")
+```
+
+```{r}
+#Summary DFs for Future.------------------------------------- 
+
+#Creating Data Frame of Consumed Items for all the products
+#Copy of Compiled Data Frame
+Individual_Analysis_Fr_CopOFFWr<-rbind.fill(List_Sens_Fr)
+Contaminations_OFFWr<-Vector_Contaminations_In
+
+#Data Frame without repeats and Consumed Items
+ST_OFFWr_Analysis<-Func_Asys_MainDF(SummaryList = List_Sens_Fr,FoodType = "Fruit")
+```
+
+
+#ST ON Exclusion Ill ON
+
+```{r}
+#Inputs and Source Files-------------------------------------
+
+
+#Inputs
+source("New_StudentLoop.R")
+source("Input_Static.R")
+source("Input_Functions.R")
+source("Util_DFFunctions.R")
+source("Util_DFWeekCreation.R")
+source("Util_Counter&Lists.R")
+#Functions
+source("Util_Functions.R")
+source("Util_CCFunctions2.R")
+source("Util_VisualFunctions.R")
+
+Ill_Avoid_ST<-1
+
+```
+
+```{r warning=TRUE}
+#Running Loop First:-------------------------------------
+start_time<-Sys.time()
+source("Main_Loops2.R")
+```
+
+```{r}
+#Summary DFs for Future-------------------------------------
+
+#Creating Data Frame of Consumed Items for all the products
+#Copy of Compiled Data Frame
+Individual_Analysis_Fr_CopExc<-rbind.fill(List_Sens_Fr)
+Contaminations_Exc<-Vector_Contaminations_In
+
+#Data Frame without repeats and Consumed Items
+ST_Exc_Analysis<-Func_Asys_MainDF(SummaryList = List_Sens_Fr,FoodType = "Fruit")
+```
+
+
+#Additional Foood Waste Analysis: 
+
+#1 scenarios, with no share table items to service line
+
+#SHARE TABLE ON, ST to Reservice<-0
+
+
+```{r}
+#Inputs and Source Files-------------------------------------
+
+
+
+#Inputs
+source("New_StudentLoop.R")
+source("Input_Static.R")
+source("Input_Functions.R")
+source("Util_DFFunctions.R")
+source("Util_DFWeekCreation.R")
+source("Util_Counter&Lists.R")
+#Functions
+source("Util_Functions.R")
+source("Util_CCFunctions2.R")
+source("Util_VisualFunctions.R")
+
+STtoReservice_YN<-0
+
+```
+
+```{r warning=TRUE}
+#Running Loop First:-------------------------------------
+start_time<-Sys.time()
+source("Main_Loops2.R")
+```
+
+```{r}
+#Summary DFs for Future.------------------------------------- 
+
+#Creating Data Frame of Consumed Items for all the products
+Individual_Analysis_Fr_CopSTClosed<-rbind.fill(List_Sens_Fr)
+#Copy of Compiled Data Frame
+Individual_Analysis_Fr_STClosed<-rbind.fill(List_Sens_Fr)
+
+#Data Frame without repeats and Consumed Items
+ST_STClosed_Analysis<-Func_Asys_MainDF(SummaryList = List_Sens_Fr,FoodType = "Fruit")
+```
+
+
+#ST_SidePRocess ON ST ON, ReServie to ST OFF. ST ON
+
+```{r}
+#Inputs and Source Files-------------------------------------
+
+
+
+#Inputs
+source("New_StudentLoop.R")
+source("Input_Static.R")
+source("Input_Functions.R")
+source("Util_DFFunctions.R")
+source("Util_DFWeekCreation.R")
+source("Util_Counter&Lists.R")
+#Functions
+source("Util_Functions.R")
+source("Util_CCFunctions2.R")
+source("Util_VisualFunctions.R")
+
+STtoReservice_YN<-1
+ST_Aside<-1
+#Wash Selection Table Fruit
+Wash_Selection_YN_Fr<-1
+#Wash Share Table Items
+Wash_ST_YN_Fr<-1
+
+```
+
+```{r warning=TRUE}
+#Running Loop First:-------------------------------------
+start_time<-Sys.time()
+source("Main_Loops2.R")
+```
+
+```{r}
+#Summary DFs for Future.------------------------------------- 
+
+#Creating Data Frame of Consumed Items for all the products
+Individual_Analysis_Fr_CopSTAside<-rbind.fill(List_Sens_Fr)
+#Copy of Compiled Data Frame
+Individual_Analysis_Fr_STAside<-rbind.fill(List_Sens_Fr)
+
+#Data Frame without repeats and Consumed Items
+ST_STAside_Analysis<-Func_Asys_MainDF(SummaryList = List_Sens_Fr,FoodType = "Fruit")
+```
+
+
+#ST, you touch it you pick it. 
+
+```{r}
+#Inputs and Source Files-------------------------------------
+
+
+
+#Inputs
+source("New_StudentLoop.R")
+source("Input_Static.R")
+source("Input_Functions.R")
+source("Util_DFFunctions.R")
+source("Util_DFWeekCreation.R")
+source("Util_Counter&Lists.R")
+#Functions
+source("Util_Functions.R")
+source("Util_CCFunctions2.R")
+source("Util_VisualFunctions.R")
+
+Pr_touch_Food<-0
+Pr_touch_Food_ST<-0
+
+```
+
+```{r warning=TRUE}
+#Running Loop First:-------------------------------------
+start_time<-Sys.time()
+source("Main_Loops2.R")
+```
+
+```{r}
+#Summary DFs for Future.------------------------------------- 
+
+#Creating Data Frame of Consumed Items for all the products
+Individual_Analysis_Fr_CopTouch<-rbind.fill(List_Sens_Fr)
+#Copy of Compiled Data Frame
+Individual_Analysis_Fr_Touch<-rbind.fill(List_Sens_Fr)
+
+#Data Frame without repeats and Consumed Items
+ST_Touch_Analysis<-Func_Asys_MainDF(SummaryList = List_Sens_Fr,FoodType = "Fruit")
+```
+
+
+
+#ST Touch but only ST Items
+
+```{r}
+#Inputs and Source Files-------------------------------------
+
+
+
+#Inputs
+source("New_StudentLoop.R")
+source("Input_Static.R")
+source("Input_Functions.R")
+source("Util_DFFunctions.R")
+source("Util_DFWeekCreation.R")
+source("Util_Counter&Lists.R")
+#Functions
+source("Util_Functions.R")
+source("Util_CCFunctions2.R")
+source("Util_VisualFunctions.R")
+
+Pr_touch_Food_ST<-0
+
+```
+
+```{r warning=TRUE}
+#Running Loop First:-------------------------------------
+start_time<-Sys.time()
+source("Main_Loops2.R")
+```
+
+```{r}
+#Summary DFs for Future.------------------------------------- 
+
+#Creating Data Frame of Consumed Items for all the products
+Individual_Analysis_Fr_CopTouchST<-rbind.fill(List_Sens_Fr)
+#Copy of Compiled Data Frame
+Individual_Analysis_Fr_TouchST<-rbind.fill(List_Sens_Fr)
+
+#Data Frame without repeats and Consumed Items
+ST_TouchST_Analysis<-Func_Asys_MainDF(SummaryList = List_Sens_Fr,FoodType = "Fruit")
+```
+
+
+#Washing Station ON
+```{r}
+#Inputs and Source Files-------------------------------------
+
+#Inputs
+source("New_StudentLoop.R")
+source("Input_Static.R")
+source("Input_Functions.R")
+source("Util_DFFunctions.R")
+source("Util_DFWeekCreation.R")
+source("Util_Counter&Lists.R")
+#Functions
+source("Util_Functions.R")
+source("Util_CCFunctions2.R")
+source("Util_VisualFunctions.R")
+
+Hawashing_Station <-1
+
+```
+
+```{r warning=TRUE}
+#Running Loop First:-------------------------------------
+start_time<-Sys.time()
+source("Main_Loops2.R")
+```
+
+```{r}
+#Summary DFs for Future.------------------------------------- 
+
+#Creating Data Frame of Consumed Items for all the products
+Individual_Analysis_Fr_CopWStation<-rbind.fill(List_Sens_Fr)
+#Copy of Compiled Data Frame
+Individual_Analysis_Fr_WStation<-rbind.fill(List_Sens_Fr)
+
+#Data Frame without repeats and Consumed Items
+ST_WStation_Analysis<-Func_Asys_MainDF(SummaryList = List_Sens_Fr,FoodType = "Fruit")
+```
+
+
+#Wash Bucket ON
+```{r}
+#Inputs and Source Files-------------------------------------
+
+#Inputs
+source("New_StudentLoop.R")
+source("Input_Static.R")
+source("Input_Functions.R")
+source("Util_DFFunctions.R")
+source("Util_DFWeekCreation.R")
+source("Util_Counter&Lists.R")
+#Functions
+source("Util_Functions.R")
+source("Util_CCFunctions2.R")
+source("Util_VisualFunctions.R")
+
+Wash_Bucket<-1
+Pr_touch_Food_ST<-0
+
+```
+
+```{r warning=TRUE}
+#Running Loop First:-------------------------------------
+start_time<-Sys.time()
+source("Main_Loops2.R")
+```
+
+```{r}
+#Summary DFs for Future.------------------------------------- 
+
+#Creating Data Frame of Consumed Items for all the products
+Individual_Analysis_Fr_CopWBucket<-rbind.fill(List_Sens_Fr)
+#Copy of Compiled Data Frame
+Individual_Analysis_Fr_WBucket<-rbind.fill(List_Sens_Fr)
+
+#Data Frame without repeats and Consumed Items
+ST_WBucket_Analysis<-Func_Asys_MainDF(SummaryList = List_Sens_Fr,FoodType = "Fruit")
+```
+
+#Hand Sanitizer All Model
+```{r}
+#Inputs and Source Files-------------------------------------
+
+#Inputs
+source("New_StudentLoop.R")
+source("Input_Static.R")
+source("Input_Functions.R")
+source("Util_DFFunctions.R")
+source("Util_DFWeekCreation.R")
+source("Util_Counter&Lists.R")
+#Functions
+source("Util_Functions.R")
+source("Util_CCFunctions2.R")
+source("Util_VisualFunctions.R")
+
+Sanitizing_Station<-1
+
+```
+
+```{r warning=TRUE}
+#Running Loop First:-------------------------------------
+start_time<-Sys.time()
+source("Main_Loops2.R")
+```
+
+```{r}
+#Summary DFs for Future.------------------------------------- 
+
+#Creating Data Frame of Consumed Items for all the products
+Individual_Analysis_Fr_CopSanitizer<-rbind.fill(List_Sens_Fr)
+#Copy of Compiled Data Frame
+Individual_Analysis_Fr_Sanitizer<-rbind.fill(List_Sens_Fr)
+
+#Data Frame without repeats and Consumed Items
+ST_Sanitizer_Analysis<-Func_Asys_MainDF(SummaryList = List_Sens_Fr,FoodType = "Fruit")
+
+Hand_Sanitizer_Tracker<-Saniztizer_Method_Tracker
+```
+
+
+###DOSE RESPONSE ###
+
+
+#Dose Response ST ON
+
+```{r}
+#detach(package:plyr)
+#library(tidyverse)
+
+#ST ON-------------------------------------
+ST_ON_Analysis_Copy<-ST_ON_Analysis
+
+#ST_ON_Analysis<-ST_ON_Analysis_Copy
+ST_ON_Analysis<-Func_Asys_ContbyStudent(ST_ON_Analysis)
+ST_ON_Analysis<-Function_RidExtra2(ST_ON_Analysis)
+
+
+#Drop NAs
+ST_ON_Analysis<- ST_ON_Analysis[!is.na(ST_ON_Analysis$Contamination), ]
+
+#Analysis For weekly Dose Response ON
+
+OutputsDRON<-Func_DR_Main(AnalysisDF = ST_ON_Analysis, Reps_DR = 100)
+df_inf_Week_ON<-OutputsDRON$df_inf_Week
+df_ill_Week_ON<-OutputsDRON$df_ill_Week
+
+```
+
+#Dose Response ST OFF
+```{r}
+#ST OFF-------------------------------------
+ST_OFF_Analysis_Copy<-ST_OFF_Analysis
+#ST_OFF_Analysis<-ST_OFF_Analysis_Copy
+ST_OFF_Analysis<-Func_Asys_ContbyStudent(ST_OFF_Analysis)
+ST_OFF_Analysis<-Function_RidExtra2(ST_OFF_Analysis)
+ST_OFF_Analysis<- ST_OFF_Analysis[!is.na(ST_OFF_Analysis$Contamination), ]
+
+#Analysis For weekly Dose Response ON
+
+OutputsDROFF<-Func_DR_Main(AnalysisDF = ST_OFF_Analysis, Reps_DR = 100)
+df_inf_Week_OFF<-OutputsDROFF$df_inf_Week
+df_ill_Week_OFF<-OutputsDROFF$df_ill_Week
+
+```
+
+#Dose Response ST ON Wash ON
+```{r}
+#ST ON Wash ONF-------------------------------------
+ST_ONWash_Analysis_Copy<-ST_ONWash_Analysis
+ST_ONWash_Analysis<-Func_Asys_ContbyStudent(ST_ONWash_Analysis)
+ST_ONWash_Analysis<-Function_RidExtra2(ST_ONWash_Analysis)
+
+#Drop NAs
+ST_ONWash_Analysis<- ST_ONWash_Analysis[!is.na(ST_ONWash_Analysis$Contamination), ]
+
+
+#Analysis For weekly Dose Response ON
+
+OutputsDRONWash<-Func_DR_Main(AnalysisDF = ST_ONWash_Analysis, Reps_DR = 100)
+df_inf_Week_ONWash<-OutputsDRONWash$df_inf_Week
+df_ill_Week_ONWash<-OutputsDRONWash$df_ill_Week
+
+```
+
+#Dose Response ST ON Wrapp ON
+```{r}
+#ST ON Wrapp ON-------------------------------------
+ST_ONWr_Analysis_Copy<-ST_ONWr_Analysis
+ST_ONWr_Analysis<-Func_Asys_ContbyStudent(ST_ONWr_Analysis)
+ST_ONWr_Analysis<-Function_RidExtra2(ST_ONWr_Analysis)
+
+#Drop NAs
+ST_ONWr_Analysis<- ST_ONWr_Analysis[!is.na(ST_ONWr_Analysis$Contamination), ]
+
+#Analysis For weekly Dose Response ON
+
+OutputsDRONWr<-Func_DR_Main(AnalysisDF = ST_ONWr_Analysis, Reps_DR = 100)
+df_inf_Week_ONWr<-OutputsDRONWr$df_inf_Week
+df_ill_Week_ONWr<-OutputsDRONWr$df_ill_Week
+
+```
+
+#Dose Response ST OFF Wash ON
+```{r}
+#ST ST OFF Wash ON-------------------------------------
+ST_OFFWash_Analysis_Copy<-ST_OFFWash_Analysis
+ST_OFFWash_Analysis<-Func_Asys_ContbyStudent(ST_OFFWash_Analysis)
+ST_OFFWash_Analysis<-Function_RidExtra2(ST_OFFWash_Analysis)
+
+#Drop NAs
+ST_OFFWash_Analysis<- ST_OFFWash_Analysis[!is.na(ST_OFFWash_Analysis$Contamination), ]
+
+#Analysis For weekly Dose Response ON
+
+OutputsDROFFWash<-Func_DR_Main(AnalysisDF = ST_OFFWash_Analysis, Reps_DR = 100)
+df_inf_Week_OFFWash<-OutputsDROFFWash$df_inf_Week
+df_ill_Week_OFFWash<-OutputsDROFFWash$df_ill_Week
+
+```
+
+#Dose Response ST OFF Wrapp ON
+```{r}
+#ST OFF Wrapp ONF-------------------------------------
+ST_OFFWr_Analysis_Copy<-ST_OFFWr_Analysis
+ST_OFFWr_Analysis<-Func_Asys_ContbyStudent(ST_OFFWr_Analysis)
+ST_OFFWr_Analysis<-Function_RidExtra2(ST_OFFWr_Analysis)
+
+#Drop NAs
+ST_OFFWr_Analysis<- ST_OFFWr_Analysis[!is.na(ST_OFFWr_Analysis$Contamination), ]
+
+#Analysis For weekly Dose Response ON
+
+OutputsDROFFWr<-Func_DR_Main(AnalysisDF = ST_OFFWr_Analysis, Reps_DR = 100)
+df_inf_Week_OFFWr<-OutputsDROFFWr$df_inf_Week
+df_ill_Week_OFFWr<-OutputsDROFFWr$df_ill_Week
+
+```
+
+
+#Dose Response ST ON Exc ON
+```{r}
+#ST OFF Wrapp ONF-------------------------------------
+ST_Exc_Analysis_Copy<-ST_Exc_Analysis
+ST_Exc_Analysis<-Func_Asys_ContbyStudent(ST_Exc_Analysis)
+ST_Exc_Analysis<-Function_RidExtra2(ST_Exc_Analysis)
+
+#Drop NAs
+ST_Exc_Analysis<- ST_Exc_Analysis[!is.na(ST_Exc_Analysis$Contamination), ]
+
+#Analysis For weekly Dose Response ON
+
+OutputsDRExc<-Func_DR_Main(AnalysisDF = ST_Exc_Analysis, Reps_DR = 100)
+df_inf_Week_Exc<-OutputsDRExc$df_inf_Week
+df_ill_Week_Exc<-OutputsDRExc$df_ill_Week
+
+```
+
+
+#Dose Response STClosed
+```{r}
+#ST OFF Wrapp ONF-------------------------------------
+ST_STClosed_Analysis_Copy<-ST_STClosed_Analysis
+ST_STClosed_Analysis<-Func_Asys_ContbyStudent(ST_STClosed_Analysis)
+ST_STClosed_Analysis<-Function_RidExtra2(ST_STClosed_Analysis)
+
+#Drop NAs
+ST_STClosed_Analysis<- ST_STClosed_Analysis[!is.na(ST_STClosed_Analysis$Contamination), ]
+
+#Analysis For weekly Dose Response ON
+
+OutputsDRSTClosed<-Func_DR_Main(AnalysisDF = ST_STClosed_Analysis, Reps_DR = 100)
+df_inf_Week_STClosed<-OutputsDRSTClosed$df_inf_Week
+df_ill_Week_STClosed<-OutputsDRSTClosed$df_ill_Week
+
+```
+
+#Dose Response STAside
+```{r}
+#ST on the side -------------------------------------
+ST_STAside_Analysis_Copy<-ST_STAside_Analysis
+ST_STAside_Analysis<-Func_Asys_ContbyStudent(ST_STAside_Analysis)
+ST_STAside_Analysis<-Function_RidExtra2(ST_STAside_Analysis)
+
+#Drop NAs
+ST_STAside_Analysis<- ST_STAside_Analysis[!is.na(ST_STAside_Analysis$Contamination), ]
+
+#Analysis For weekly Dose Response ON
+
+OutputsDRSTAside<-Func_DR_Main(AnalysisDF = ST_STAside_Analysis, Reps_DR = 100)
+df_inf_Week_STAside<-OutputsDRSTAside$df_inf_Week
+df_ill_Week_STAside<-OutputsDRSTAside$df_ill_Week
+
+```
+
+#ST Touch it Pick it.
+
+```{r}
+#ST on the side -------------------------------------
+ST_Touch_Analysis_Copy<-ST_Touch_Analysis
+ST_Touch_Analysis<-Func_Asys_ContbyStudent(ST_Touch_Analysis)
+ST_Touch_Analysis<-Function_RidExtra2(ST_Touch_Analysis)
+
+#Drop NAs
+ST_Touch_Analysis<- ST_Touch_Analysis[!is.na(ST_Touch_Analysis$Contamination), ]
+
+#Analysis For weekly Dose Response ON
+
+OutputsDRTouch<-Func_DR_Main(AnalysisDF = ST_Touch_Analysis, Reps_DR = 100)
+df_inf_Week_Touch<-OutputsDRTouch$df_inf_Week
+df_ill_Week_Touch<-OutputsDRTouch$df_ill_Week
+
+```
+
+#ST Touch but only ST ITems. 
+
+```{r}
+#ST on the side -------------------------------------
+ST_TouchST_Analysis_Copy<-ST_TouchST_Analysis
+ST_TouchST_Analysis<-Func_Asys_ContbyStudent(ST_TouchST_Analysis)
+ST_TouchST_Analysis<-Function_RidExtra2(ST_TouchST_Analysis)
+
+#Drop NAs
+ST_TouchST_Analysis<- ST_TouchST_Analysis[!is.na(ST_TouchST_Analysis$Contamination), ]
+
+#Analysis For weekly Dose Response ON
+
+OutputsDRTouchST<-Func_DR_Main(AnalysisDF = ST_TouchST_Analysis, Reps_DR = 100)
+df_inf_Week_TouchST<-OutputsDRTouchST$df_inf_Week
+df_ill_Week_TouchST<-OutputsDRTouchST$df_ill_Week
+
+```
+
+#HandWashing Station
+```{r}
+#Handwashing Station -------------------------------------
+ST_WStation_Analysis_Copy<-ST_WStation_Analysis
+ST_WStation_Analysis<-Func_Asys_ContbyStudent(ST_WStation_Analysis)
+ST_WStation_Analysis<-Function_RidExtra2(ST_WStation_Analysis)
+
+#Drop NAs
+ST_WStation_Analysis<- ST_WStation_Analysis[!is.na(ST_WStation_Analysis$Contamination), ]
+
+#Analysis For weekly Dose Response ON
+
+OutputsDRWStation<-Func_DR_Main(AnalysisDF = ST_WStation_Analysis, Reps_DR = 100)
+df_inf_Week_WStation<-OutputsDRWStation$df_inf_Week
+df_ill_Week_WStation<-OutputsDRWStation$df_ill_Week
+
+```
+
+#Wash Bucket
+```{r}
+#Wash Bucket -------------------------------------
+ST_WBucket_Analysis_Copy<-ST_WBucket_Analysis
+ST_WBucket_Analysis<-Func_Asys_ContbyStudent(ST_WBucket_Analysis)
+ST_WBucket_Analysis<-Function_RidExtra2(ST_WBucket_Analysis)
+
+#Drop NAs
+ST_WBucket_Analysis<- ST_WBucket_Analysis[!is.na(ST_WBucket_Analysis$Contamination), ]
+
+#Analysis For weekly Dose Response ON
+
+OutputsDRWBucket<-Func_DR_Main(AnalysisDF = ST_WBucket_Analysis, Reps_DR = 100)
+df_inf_Week_WBucket<-OutputsDRWBucket$df_inf_Week
+df_ill_Week_WBucket<-OutputsDRWBucket$df_ill_Week
+
+```
+
+#Hand Sanitizer Dose Response
+```{r}
+#Wash Bucket -------------------------------------
+ST_Sanitizer_Analysis_Copy<-ST_Sanitizer_Analysis
+ST_Sanitizer_Analysis<-Func_Asys_ContbyStudent(ST_Sanitizer_Analysis)
+ST_Sanitizer_Analysis<-Function_RidExtra2(ST_Sanitizer_Analysis)
+
+#Drop NAs
+ST_Sanitizer_Analysis<- ST_Sanitizer_Analysis[!is.na(ST_Sanitizer_Analysis$Contamination), ]
+
+#Analysis For weekly Dose Response ON
+
+OutputsDRSanitizer<-Func_DR_Main(AnalysisDF = ST_Sanitizer_Analysis, Reps_DR = 100)
+df_inf_Week_Sanitizer<-OutputsDRSanitizer$df_inf_Week
+df_ill_Week_Sanitizer<-OutputsDRSanitizer$df_ill_Week
+
+```
+
+
+
+#Boxplot Data for All scenarios
+
+```{r}
+#ST ON
+df_ill_Week_ON_Box_Prev<-Func_DF_Prevalence(AnalysisDFCop = ST_ON_Analysis_Copy, df_Ill_Week = df_ill_Week_ON,Intervention = "STON")
+
+#ST OFF
+df_ill_Week_OFF_Box_Prev<-Func_DF_Prevalence(AnalysisDFCop = ST_OFF_Analysis_Copy, df_Ill_Week = df_ill_Week_OFF,Intervention = "STOFF")
+
+#ST ONWash
+df_ill_Week_ONWash_Box_Prev<-Func_DF_Prevalence(AnalysisDFCop = ST_ONWash_Analysis_Copy, df_Ill_Week = df_ill_Week_ONWash,Intervention = "ONwash")
+
+#ST ONWr
+df_ill_Week_ONWr_Box_Prev<-Func_DF_Prevalence(AnalysisDFCop = ST_ONWr_Analysis_Copy, df_Ill_Week = df_ill_Week_ONWr,Intervention = "ONWr")
+
+#ST OFFWash
+df_ill_Week_OFFWash_Box_Prev<-Func_DF_Prevalence(AnalysisDFCop = ST_OFFWash_Analysis_Copy, df_Ill_Week = df_ill_Week_OFFWash,Intervention = "OFFWash")
+
+#ST OFFWr
+df_ill_Week_OFFWr_Box_Prev<-Func_DF_Prevalence(AnalysisDFCop = ST_OFFWr_Analysis_Copy, df_Ill_Week = df_ill_Week_OFFWr,Intervention = "OFFWr")
+
+#ST Exc
+df_ill_Week_Exc_Box_Prev<-Func_DF_Prevalence(AnalysisDFCop = ST_Exc_Analysis_Copy, df_Ill_Week = df_ill_Week_Exc,Intervention = "Exc")
+
+#ST ST Closed
+df_ill_Week_STClosed_Box_Prev<-Func_DF_Prevalence(AnalysisDFCop = ST_STClosed_Analysis_Copy, df_Ill_Week = df_ill_Week_STClosed,Intervention = "XSTClosed")
+
+#ST Aside
+
+#ST ST Closed
+df_ill_Week_STAside_Box_Prev<-Func_DF_Prevalence(AnalysisDFCop = ST_STAside_Analysis_Copy, df_Ill_Week = df_ill_Week_STAside,Intervention = "STAside")
+
+
+#Touch you pick it all
+df_ill_Week_Touch_Box_Prev<-Func_DF_Prevalence(AnalysisDFCop = ST_Touch_Analysis_Copy, df_Ill_Week = df_ill_Week_Touch,Intervention = "Touch")
+
+
+#Touch you pick it ST only
+df_ill_Week_TouchST_Box_Prev<-Func_DF_Prevalence(AnalysisDFCop = ST_TouchST_Analysis_Copy, df_Ill_Week = df_ill_Week_TouchST,Intervention = "TouchST")
+
+
+#Handwashing Station
+df_ill_Week_WStation_Box_Prev<-Func_DF_Prevalence(AnalysisDFCop = ST_WStation_Analysis_Copy, df_Ill_Week = df_ill_Week_WStation,Intervention = "WStation")
+
+#Fruit Wash Bucket
+df_ill_Week_WBucket_Box_Prev<-Func_DF_Prevalence(AnalysisDFCop = ST_WBucket_Analysis_Copy, df_Ill_Week = df_ill_Week_WBucket,Intervention = "WBucket")
+
+#Fruit Sanitizer
+df_ill_Week_Sanitizer_Box_Prev<-Func_DF_Prevalence(AnalysisDFCop = ST_Sanitizer_Analysis_Copy, df_Ill_Week = df_ill_Week_Sanitizer,Intervention = "Sanitize")
+
+```
+
+
+#Sanitizer Analysis Revision 1/11 Figure 5
+
+### Load in Rdata Sanitizer Analysis and Washing-Published.Rdata
+```{r}
+library(ggpubr)
+library(rstatix)
+
+Sanitizer_Data<-df_ill_Week_Sanitizer_Box_Prev
+
+#write.csv(x=Sanitizer_Data, "Sanitizer Efficacy Comparison - Published.csv" )
+
+Sanitizer_Data <-Sanitizer_Data %>% 
+  arrange(variable)
+
+
+Sanitizer_Data$method<-as.factor(rep(Hand_Sanitizer_Tracker,each=100))
+
+means <- aggregate(Prev ~  method, Sanitizer_Data, mean)
+means$Prev<-round(means$Prev,4)
+
+quantiles_95 <- function(x) {
+  r <- quantile(x, probs=c(0.05, 0.25, 0.5, 0.75, 0.95))
+  names(r) <- c("ymin", "lower", "middle", "upper", "ymax")
+  r
+}
+
+
+
+#Boxplot this creates 5A
+box_s<-Sanitizer_Data %>% 
+  ggplot(aes(y = Prev,x = method, fill = method))+
+  stat_summary(fun.data = quantiles_95, geom="boxplot")+
+  geom_text(data = means, aes(label = Prev, y = Prev ), size=3.5)+
+  scale_fill_grey(start = 0.4, end = .9,labels = c("1", "2", "3", "4", "5", "6"), guide = "none") +
+  ggtitle("Illness prevalence per hand-sanitizer distribution selected") +
+  theme(plot.title = element_text(size =10))+
+  xlab("Hand Sanitizer Distribution") + ylab("Illness Prevalence")+
+  labs(fill = "Hand\n Sanitizer")+
+  scale_x_discrete(labels = c("1", "2", "3", "4", "5", "6"))+
+  geom_hline(yintercept = 0.0149, size = 1,linetype="dotted")+
+  annotate("segment", x = 1.8, xend = 1.5, y = 0.014, yend = 0.0149, colour = "black", size = 0.7)+
+  annotate("label", x=2.0, y=0.014, label= "Baseline Mean Illness Prevalence", size =3) 
+
+my_comps<-list(c(1,2),c(3,1),c(4,1),c(5,1),c(6,1),c(3,2),c(4,2),c(5,2),c(6,2),c(4,3),c(5,3), c(6,3),c(5,4),c(6,4),c(6,5))
+my_final_comps<-list(c(3,6),c(1,6))
+box_s<-boxp+stat_compare_means( comparisons =my_final_comps ,method="t.test",label = "p.signif")+
+   stat_compare_means(label.y = 0.05, method = "anova")
+
+stat.test <- Sanitizer_Data %>% t_test(Prev ~ method)
+stat.test <- stat.test %>% add_xy_position(x = "method")
+boxp+stat_pvalue_manual(stat.test, label = "p.adj.signif", tip.length = 0.1)
+
+list_of_groups<-Sanitizer_Data %>% 
+  group_split(method)
+
+for (i in list_of_groups ){
+  group <- i$Prev
+  group <- group[1:5000]
+  print(shapiro.test(group))
+}
+#shapiro wilk test shows that all groups follow a normal distribution. 
+levene_test(Sanitizer_Data, Prev~method)
+
+fm1 <- aov(Prev~method, data=Sanitizer_Data)
+anova(fm1)
+TUKEY<-TukeyHSD(fm1)
+plot(TUKEY , las=1 , col="brown")
+
+
+ggboxplot(Sanitizer_Data, x = "method", y = "Prev",
+          color = "method", palette = "jco")+
+  stat_compare_means(method = "anova")
+
+
+bxp <- ggboxplot(Sanitizer_Data, x = "method", y = "Prev", fill = "method")
+
+
+```
+
+
+#Washing Analysis Figure 5
+```{r}
+Washing_Data<-df_ill_Week_ONWash_Box_Prev
+
+#write.csv(x=Washing_Data, "Washing Efficacy Comparison - Published.csv" )
+
+
+Washing_Data <-Washing_Data %>% 
+  arrange(variable)
+
+
+Washing_Data$method<-as.factor(rep(Wash_Method_Tracker,each=100))
+
+means_w <- aggregate(Prev ~  method, Washing_Data, mean)
+means_w$Prev<-round(means_w$Prev,4)
+
+#Boxplot this create 5B
+box_w<-Washing_Data %>% 
+  ggplot(aes(y = Prev,x = method, fill = method))+
+  stat_summary(fun.data = quantiles_95, geom="boxplot")+
+  geom_text(data = means_w, aes(label = Prev, y = Prev ), vjust = -0.1)+
+  scale_fill_grey(start = 0.4, end = .9,labels = c("1", "2", "3"),guide = "none") +
+  ggtitle("Illness prevalence per fruit washing distribution selected") +
+  theme(plot.title = element_text(size = 10))+
+  xlab("Fruit Washing Distribution") + ylab("Illness Prevalence")+
+  labs(fill = "Washing\n Method")+
+  scale_x_discrete(labels = c("1", "2", "3"))+
+  geom_hline(yintercept = 0.0149, size = 1, alpha = 0.8,linetype="dotted")
+  #annotate("segment", x = 1.5, xend = 1.5, y = 0.02, yend = 0.0149, colour = "black", size = 0.6 )+
+  #annotate("label", x=1.5, y=0.02, label= "Baseline Mean Illness Prevalence",size =3)
+
+my_comps<-list(c(1,2),c(3,2), c(3,1))
+box_w<-boxp+stat_compare_means( comparisons =my_comps ,method="t.test",label = "p.signif")+
+   stat_compare_means(label.y = 0.065, label.x = 0.75, method = "anova")
+
+stat.test <- Washing_Data %>% t_test(Prev ~ method)
+stat.test <- stat.test %>% add_xy_position(x = "method")
+boxp+stat_pvalue_manual(stat.test, label = "p.adj.signif", tip.length = 0.1)
+
+fm1 <- aov(Prev~method, data=Washing_Data)
+anova(fm1)
+TUKEY<-TukeyHSD(fm1)
+TUKEY
+plot(TUKEY)
+
+TUKEY$method
+
+
+
+ggarrange(box_s,box_w , 
+          labels = c("A", "B"),
+          ncol = 2, nrow = 1)
+
+```
+
+#Consumption Locations
+```{r}
+ST_Comb_Analysis_Con<-Func_DF_Locations_1()
+
+Food_sec<-ggplot(data =ST_Comb_Analysis_Con, aes(x = Type,fill=Location)  )+
+  geom_bar()+
+  geom_text(stat = "count",aes(label=..count..),position = position_stack(vjust = .5))+
+  xlab("Number of Fruit Items")+
+  ylab("Intervention")+
+  ggtitle("Share Table Interventions: Items Consumed vs Discarded")+ 
+  theme(plot.title = element_text(hjust = 0.5))
+
+outputsLocations<-Func_DF_Locations()
+Vector_Total_Items<-outputsLocations$Vector_Total_Items
+Vector_Total_Item_Con<-outputsLocations$Vector_Total_Item_Con
+Vector_Total_Item_Dis<-outputsLocations$Vector_Total_Item_Dis
+
+ggsave(filename = "Food_sec.png", path = pathfolder,width = 8,height = 6,)
+print(Food_sec)
+
+```
+
+
+#Histograms for Exposure
+```{r}
+ST_ON_Analysis_Log<-Func_DF_Histogram_Log(AnalysisDF = ST_ON_Analysis,Intervention = "ON")
+ST_OFF_Analysis_Log<-Func_DF_Histogram_Log(AnalysisDF = ST_OFF_Analysis,Intervention = "OFF")
+ST_ONWash_Analysis_Log<-Func_DF_Histogram_Log(AnalysisDF = ST_ONWash_Analysis,Intervention = "ONWash")
+ST_ONWr_Analysis_Log<-Func_DF_Histogram_Log(AnalysisDF = ST_ONWr_Analysis,Intervention = "ONWr")
+ST_OFFWash_Analysis_Log<-Func_DF_Histogram_Log(AnalysisDF = ST_OFFWash_Analysis,Intervention = "OFFWash")
+ST_OFFWr_Analysis_Log<-Func_DF_Histogram_Log(AnalysisDF = ST_OFFWr_Analysis,Intervention = "OFFWr")
+ST_Exc_Analysis_Log<-Func_DF_Histogram_Log(AnalysisDF = ST_Exc_Analysis,Intervention = "XExc")
+ST_STClosed_Analysis_Log<-Func_DF_Histogram_Log(AnalysisDF = ST_STClosed_Analysis,Intervention = "XSTClosed")
+ST_STAside_Analysis_Log<-Func_DF_Histogram_Log(AnalysisDF = ST_STAside_Analysis,Intervention = "STAside")
+ST_Touch_Analysis_Log<-Func_DF_Histogram_Log(AnalysisDF = ST_Touch_Analysis,Intervention = "Touch")
+ST_TouchST_Analysis_Log<-Func_DF_Histogram_Log(AnalysisDF = ST_TouchST_Analysis,Intervention = "TouchST")
+ST_WStation_Analysis_Log<-Func_DF_Histogram_Log(AnalysisDF = ST_WStation_Analysis,Intervention = "WStation")
+ST_WBucket_Analysis_Log<-Func_DF_Histogram_Log(AnalysisDF = ST_WBucket_Analysis,Intervention = "WBucket")
+ST_Sanitizer_Analysis_Log<-Func_DF_Histogram_Log(AnalysisDF = ST_Sanitizer_Analysis,Intervention = "Sanitizer")
+
+
+
+ST_Comb_Analysis_Log<-bind_rows(ST_ON_Analysis_Log,ST_OFF_Analysis_Log,ST_ONWash_Analysis_Log,
+                                ST_ONWr_Analysis_Log,ST_OFFWash_Analysis_Log,ST_OFFWr_Analysis_Log,
+                                ST_Exc_Analysis_Log,ST_STClosed_Analysis_Log,ST_STAside_Analysis_Log,
+                                ST_WStation_Analysis_Log,ST_WBucket_Analysis_Log,ST_Sanitizer_Analysis_Log)
+
+Histolabels<-c("OFF" = "Baseline: ST OFF, No Intervention", 
+              "OFFWash"  = "ST OFF, Wash ON", 
+              "OFFWr" ="ST OFF, Wrapping ON", 
+              "ON"="ST ON, No Intervention", 
+              "ONWash" =  "ST ON, Wash ON",
+              "ONWr" =  "ST ON, Wrapping ON",
+              "XExc" = "ST ON, 50% Exclusion ",
+              "XSTClosed" = "Re-Service OFF",
+              "STAside" = "STAside",
+              "WStation" = "Wash Station",
+              "WBucket"= "Wash Bucket",
+              "Sanitizer" = "Sanitizer"
+               )
+
+Wrapped_Histograms<-ggplot(data = ST_Comb_Analysis_Log,aes(x=Log))+
+  geom_histogram(colour="black", alpha=.2,bins =10,boundary = -.001)+
+  facet_wrap( ~OnOff ,labeller = as_labeller(Histolabels))+
+  scale_x_continuous( )+
+  xlab("Contamination log GEC/Item")+
+  ylab("Number of Students")+
+  ggtitle("Share Table Interventions: Contamination distribution Consumed by Students")+ 
+  theme(plot.title = element_text(hjust = 0.5))+
+  stat_bin(aes(y=..count.., label=..count..), geom="text", vjust=-.2,bins=10, boundary = -.001,size=3)
+
+ggsave(filename = "Wrapped_Histograms.png", path = pathfolder,width = 10,height = 10,)
+print(Wrapped_Histograms)
+
+
+
+```
+
+#Exposure Barchart. 
+```{r}
+
+#Need to add the last 4 to tips 4 only encessary for creating the graph
+tipsON<-Func_DF_Barplot_Log(ST_Analysis_Log = ST_ON_Analysis_Log, Intervention = "ON")
+tipsOFF<-Func_DF_Barplot_Log(ST_Analysis_Log = ST_OFF_Analysis_Log,Intervention = "OFF")
+tipsONWash<-Func_DF_Barplot_Log(ST_Analysis_Log = ST_ONWash_Analysis_Log,Intervention = "ONWash")
+tipsONWr<-Func_DF_Barplot_Log(ST_Analysis_Log = ST_ONWr_Analysis_Log,Intervention = "ONWr")
+tipsOFFWash<-Func_DF_Barplot_Log(ST_Analysis_Log = ST_OFFWash_Analysis_Log,Intervention = "OFFWash")
+tipsOFFWr<-Func_DF_Barplot_Log(ST_Analysis_Log = ST_OFFWr_Analysis_Log,Intervention = "OFFWr")
+tipsExc<-Func_DF_Barplot_Log(ST_Analysis_Log = ST_Exc_Analysis_Log,Intervention = "XExc")
+tipsSTClosed<-Func_DF_Barplot_Log(ST_Analysis_Log = ST_STClosed_Analysis_Log,Intervention = "XSTClosed")
+tipsSTAside<-Func_DF_Barplot_Log(ST_Analysis_Log = ST_STAside_Analysis_Log,Intervention = "STAside")
+tipsTouch<-Func_DF_Barplot_Log(ST_Analysis_Log = ST_Touch_Analysis_Log,Intervention = "Touch")
+tipsTouchST<-Func_DF_Barplot_Log(ST_Analysis_Log = ST_TouchST_Analysis_Log,Intervention = "TouchST")
+tipsWStation<-Func_DF_Barplot_Log(ST_Analysis_Log = ST_WStation_Analysis_Log,Intervention = "WStation")
+tipsWBucket<-Func_DF_Barplot_Log(ST_Analysis_Log = ST_WBucket_Analysis_Log,Intervention = "WBucket")
+tipsSanitizer<-Func_DF_Barplot_Log(ST_Analysis_Log = ST_Sanitizer_Analysis_Log,Intervention = "Sanitizer")
+
+#need to add to tips 4
+tips4<-bind_rows(tipsON,tipsOFF,tipsONWash,tipsONWr,tipsOFFWash, tipsOFFWr,
+                 tipsExc,tipsSTClosed,tipsSTAside)
+
+barchart_Expos<-ggplot(data =tips4, aes(x = OnOff,y=perc, fill=factor(Category, levels=c("0","<0 - 99","100 - 999",">=1000"))))+
+  geom_col(width = .7)+
+  geom_text_repel(aes(x = OnOff, 
+                      y = perc, 
+                      label = paste(round(perc*100,2),"%")),nudge_y = .1, nudge_x = .25, direction = "x")+
+  geom_text_repel(aes(x = OnOff, 
+                      y = perc, 
+                      label = n),nudge_x = -.25,nudge_y = .1, direction = "x")+
+  labs(fill = "Category")+
+  scale_x_discrete()+
+  coord_flip()+
+  xlab(label = "Share Table Status")+
+  ylab(label = "")+
+    ggtitle("Composition on Exposure of Individual Students (%)")+ 
+  theme(plot.title = element_text(hjust = 0.5))
+
+ggsave(filename = "barchart_Expos_1.png", path = pathfolder,width = 10,height = 6,)
+print(barchart_Expos)
+
+colors_11<-c('OFF'="dodgerblue4",'OFFWash' ="dodgerblue3",'OFFWr'="dodgerblue1",'ON' ="darkseagreen","ONWash" ="palegreen3","ONWr"="palegreen2","XExc" = "Orange", "XSTClosed" = "Red", "STAside"="Yellow"  )
+
+Barchart_Expos2<-ggplot(data =tips4, aes(fill=OnOff,y=perc, x=factor(Category, levels=c("0","<0 - 99","100 - 999",">=1000"))))+
+  geom_bar(position="dodge", stat="identity")+
+  geom_text(aes(label=paste(round(perc*100,1),"%")), position=position_dodge(width=0.9), vjust=0.25,hjust = .5 ,size = 3.5, angle = 90)+
+  xlab(label = "Exposure Levels: GEC NoV Consumed")+
+  ylab(label = "Percentage")+
+  ggtitle("Composition on Exposure of Individual Students (%)")+ 
+  theme(plot.title = element_text(hjust = 0.5))+
+  labs(fill = "Intervention")+
+  scale_fill_manual(values = colors_11, labels = Histolabels)
+
+ggsave(filename = "Barchart_Expos.png", path =pathfolder,width = 8,height = 6,)
+print(Barchart_Expos2)
+
+```
+
+#Boxplot of illness prevalences and significance analysis Figure 6
+
+```{r}
+All_binded_bplot<-rbind(
+df_ill_Week_ON_Box_Prev,df_ill_Week_OFF_Box_Prev,df_ill_Week_ONWash_Box_Prev,df_ill_Week_ONWr_Box_Prev,df_ill_Week_OFFWash_Box_Prev,df_ill_Week_OFFWr_Box_Prev,df_ill_Week_Exc_Box_Prev, df_ill_Week_STClosed_Box_Prev, df_ill_Week_STAside_Box_Prev, df_ill_Week_TouchST_Box_Prev, df_ill_Week_WStation_Box_Prev, df_ill_Week_WBucket_Box_Prev,df_ill_Week_Sanitizer_Box_Prev)
+
+
+Treatment_Names<-c("ON", "OFF", "ONWash","ONWr", "OFFWash","OFFWr", "XExc", "XSTClosed", 
+                   "STAside", 'Touch', "TouchST", "WStation", "WBucket", "Sanitizer")
+Treatment_Names_A<-c("ON", "OFF", "ONWash","ONWr", "OFFWash","OFFWr", "XExc", "XSTClosed", 
+                   "STAside", "TouchST", "WStation", "WBucket", "Sanitizer")
+
+All_binded_bplot$Treatments<-rep(Treatment_Names_A, each  =100000)
+
+g<-ggplot(data = All_binded_bplot, aes(x = factor(Treatments, level = c('OFF', 'ON', 'OFFWash',"ONWash","OFFWr","ONWr","STAside","TouchST","WBucket", "XExc","WStation","Sanitizer","XSTClosed")), y = Prev))+
+  annotate("rect", xmin = -Inf, xmax = Inf, ymin = c(0.01079137), ymax = c(0.01836394),
+           alpha = .3,fill = "grey")+
+    annotate("rect", xmin = -Inf, xmax = Inf, ymin = c(0.01204819), ymax = c(0.01929346),
+           alpha = .3,fill =  "grey7")+
+  geom_boxplot()+
+  ylab("Illness prevalence from Dose response")+
+  xlab("Scenarios")
+
+g+
+    stat_summary(
+    geom = "point",
+    fun.y = "mean",
+    col = "black",
+    size = 1.5,
+    shape = 24,
+    fill = "black"
+  )+
+  geom_hline(aes(yintercept=0.01079137,linetype="Baseline Traditional"), color = "black", size=1, alpha = 0.8)+
+  geom_hline(aes(yintercept=0.01836394,linetype="Baseline Traditional"), color = "black", size=1, alpha = 0.8)+
+  geom_hline(aes(yintercept=0.01204819,linetype="Baseline ST"), color = "black", size=1, alpha = 0.8)+
+  geom_hline(aes(yintercept=0.01929346,linetype="Baseline ST"), color = "black", size=1, alpha = 0.8)+
+    #geom_hline(yintercept=c(0.01204819,0.01929346),linetype=c('dotted','dotted'), color = "black", size=1, alpha = 0.8)+
+  scale_linetype_manual(name ="IQR for Baseline Scenarios",values = c("longdash", "dotted"))+
+  theme_bw()+
+  scale_x_discrete(labels = c("ON" = "2) Baseline share table" ,
+                              "OFF" = "1)Baseline traditional cafeteria", 
+                              "ONWash" = "4)Wash fruit, with share table",
+                              "ONWr" = "6) Wrap fruit, with share table", 
+                              "OFFWash" = "3) Wash fruit, no share table",
+                              "OFFWr" = "5) Wrap fruit, no share table ", 
+                              "XExc" = "10) Ill exclusion 50%", 
+                              "XSTClosed" = "13) Re-Service off", 
+                              "STAside" = "7) One-Way ST", 
+                              "TouchST" = "8) Touches off , ST only", 
+                              "WStation" = "11) Hand washing Station", 
+                              "WBucket" = "9) Wash bucket", 
+                              "Sanitizer" = "12) Hand sanitizer Station"))+
+  theme(axis.text.x = element_text(angle =60, hjust = 1))+
+  ggtitle("Illness prevalence per scenario") +
+  theme(plot.title = element_text(hjust = 0.5,size = 15),text = element_text(size = 15))+
+  ggsave(filename = "Boxplot_Prevalence.png", path = "C:/Users/Gustavo Reyes/Box/Share Table Project/QMRA Files/QMRA Paper/MRA Submission/Figures-R1",width = 10,height = 10,)
+
+  
+quantile(df_ill_Week_OFF_Box_Prev$Prev)
+quantile(df_ill_Week_ON_Box_Prev$Prev)
+
+model <- aov(Prev ~ Treatments, data = All_binded_bplot)
+summary(model)
+
+library(DescTools)
+All_binded_bplot$Treatments<-as.factor(All_binded_bplot$Treatments)
+DunnettTest(x=All_binded_bplot$Prev, g=All_binded_bplot$Treatments)
+
+```
+
+
+#Creation of the summary Table Table 3 
+```{r}
+
+List_Summary_Table<-list(ST_ON_Analysis,ST_OFF_Analysis,ST_ONWash_Analysis,
+                         ST_ONWr_Analysis,ST_OFFWash_Analysis,ST_OFFWr_Analysis,ST_Exc_Analysis, 
+                         ST_STClosed_Analysis, ST_STAside_Analysis, ST_Touch_Analysis, 
+                         ST_TouchST_Analysis, ST_WStation_Analysis,ST_WBucket_Analysis,
+                         ST_Sanitizer_Analysis)
+
+
+NStudentsConsumed<-sapply(List_Summary_Table, nrow)
+
+List_Summary_Table_Ill<-list(df_ill_Week_ON_Box_Prev,df_ill_Week_OFF_Box_Prev,df_ill_Week_ONWash_Box_Prev,df_ill_Week_ONWr_Box_Prev,df_ill_Week_OFFWash_Box_Prev,df_ill_Week_OFFWr_Box_Prev,df_ill_Week_Exc_Box_Prev, df_ill_Week_STClosed_Box_Prev, df_ill_Week_STAside_Box_Prev, df_ill_Week_Touch_Box_Prev, df_ill_Week_TouchST_Box_Prev, df_ill_Week_WStation_Box_Prev, df_ill_Week_WBucket_Box_Prev,df_ill_Week_Sanitizer_Box_Prev )
+
+List_Summary_Table_Ill_Col<-lapply(List_Summary_Table_Ill,"[[","Prev")
+  
+  MeanPRevalneces<-sapply(X =List_Summary_Table_Ill_Col,FUN = mean )
+  MeadianPrevalences<-sapply(X =List_Summary_Table_Ill_Col,FUN = median )
+  Prevs975<-sapply(X =List_Summary_Table_Ill_Col,FUN = quantile,.975  )
+  Prevs025<-sapply(X =List_Summary_Table_Ill_Col,FUN = quantile,.025  )
+
+List_Percentages_Dist<-list(tipsON,tipsOFF,tipsONWash,tipsONWr,tipsOFFWash, tipsOFFWr,tipsExc, tipsSTClosed, tipsSTAside, tipsTouch, tipsTouchST , tipsWStation,tipsWBucket, tipsSanitizer)
+  ZerosL<-unlist(sapply(List_Percentages_Dist,function(x) x[4,3]))
+  ZeroNine<-unlist(sapply(List_Percentages_Dist,function(x) x[3,3]))
+  Nine_3Nine<-unlist(sapply(List_Percentages_Dist,function(x) x[2,3]))
+  ThousandsL<-unlist(sapply(List_Percentages_Dist,function(x) x[1,3]))
+  
+  #Creation of Data Frame
+  
+  Summary_Comparison_Treatments<-data.frame(
+  "Treatment" = c(1:14),
+  "Treatment Desc" = Treatment_Names
+)
+  
+  Summary_Comparison_Treatments<-data.frame(
+  "Treatment" = c(1:14),
+  "Treatment Desc" = Treatment_Names,
+  "NWeeks" = Sens_Iterations,
+  "Participating Students" = N_Iterations*Service_No* Food_Days*Sens_Iterations,
+  "NStudentCosumedFood" = NStudentsConsumed,
+  #"ConsumptionRate"=Summary_Comparison_Treatments$NStudentCosumedFood/Summary_Comparison_Treatments$Participating.Students*100,
+  "TotalFruitSystem"= Vector_Total_Items,
+  "TotalFruitConsumed"=Vector_Total_Item_Con,
+  "TotalFruitDiscarded"=Vector_Total_Item_Dis,
+  #"PercentConsumed"=Summary_Comparison_Treatments$TotalFruitConsumed/Summary_Comparison_Treatments$TotalFruitSystem,
+  #"PercentDiscarded"=Summary_Comparison_Treatments$TotalFruitDiscarded/Summary_Comparison_Treatments$TotalFruitSystem,
+  "0" = ZerosL*100 ,
+  ">0" = ZeroNine*100,
+  ">100"=Nine_3Nine*100,
+  ">1000"= ThousandsL*100,
+  "Mean Prevalence Ill" = MeanPRevalneces*100,
+  "MedianPrev"= MeadianPrevalences,
+  "Top 97.5 Ill"=Prevs975*100,
+  "Bot 025 Ill"=Prevs025*100,
+  stringsAsFactors = FALSE
+  )
+  
+  
+  Summary_Comparison_Treatments<-data.frame(
+  "Treatment" = c(1:14),
+  "Treatment Desc" = Treatment_Names,
+  "NWeeks" = Sens_Iterations,
+  "Participating Students" = N_Iterations*Service_No* Food_Days*Sens_Iterations,
+  "NStudentCosumedFood" = NStudentsConsumed,
+  "ConsumptionRate"=Summary_Comparison_Treatments$NStudentCosumedFood/Summary_Comparison_Treatments$Participating.Students*100,
+  "TotalFruitSystem"= Vector_Total_Items,
+  "TotalFruitConsumed"=Vector_Total_Item_Con,
+  "TotalFruitDiscarded"=Vector_Total_Item_Dis,
+  "PercentConsumed"=Summary_Comparison_Treatments$TotalFruitConsumed/Summary_Comparison_Treatments$TotalFruitSystem*100,
+  "PercentDiscarded"=Summary_Comparison_Treatments$TotalFruitDiscarded/Summary_Comparison_Treatments$TotalFruitSystem*100,
+  "0" = ZerosL*100 ,
+  ">0" = ZeroNine*100,
+  ">100"=Nine_3Nine*100,
+  ">1000"= ThousandsL*100,
+  "Mean Prevalence Ill" = MeanPRevalneces*100,
+  "MedianPrev"= MeadianPrevalences,
+  "Top 97.5 Ill"=Prevs975*100,
+  "Bot 025 Ill"=Prevs025*100,
+  
+  stringsAsFactors = FALSE
+  )
+  
+  write.csv(x =  Summary_Comparison_Treatments,"G:/Share Table QMRA/Share-Table-QMRA/R/DoseReponse5-27/SummaryComparison.csv", row.names = FALSE )
+  #write.csv(x =  Summary_Comparison_Treatments,"C:/Users/gareyes3/Documents/GitHub/Share-Table-QMRA/R/Dose Response/SummaryComparison.csv", row.names = FALSE )
+  
+```
+
+#Prevalence Histograms
+Need to add the last 4 interventions
+```{r}
+binded_prevalences<-bind_rows(df_ill_Week_ON_Box_Prev,df_ill_Week_OFF_Box_Prev,df_ill_Week_ONWash_Box_Prev,
+                              df_ill_Week_ONWr_Box_Prev,df_ill_Week_OFFWash_Box_Prev,df_ill_Week_OFFWr_Box_Prev,
+                              df_ill_Week_Exc_Box_Prev, df_ill_Week_STClosed_Box_Prev, df_ill_Week_STAside_Box_Prev,
+                              df_ill_Week_Sanitizer_Box_Prev)
+
+binded_prevalences$Prev<-binded_prevalences$Pre*100
+
+
+binded_prevalences_Wash<-bind_rows(df_ill_Week_ON_Box_Prev,df_ill_Week_OFF_Box_Prev,df_ill_Week_ONWash_Box_Prev,
+                                   df_ill_Week_OFFWash_Box_Prev)
+
+binded_prevalences_WashWr<-bind_rows(df_ill_Week_ON_Box_Prev,df_ill_Week_OFF_Box_Prev,df_ill_Week_ONWash_Box_Prev,df_ill_Week_OFFWash_Box_Prev,df_ill_Week_ONWr_Box_Prev, df_ill_Week_OFFWr_Box_Prev)
+
+
+
+
+colors_12<-c('STOFF'="dodgerblue4",'OFFWash' ="dodgerblue3",'OFFWr'="dodgerblue1",'STON' ="darkseagreen","ONwash" ="palegreen3","ONWr"="palegreen2","Exc" = "Orange", "XSTClosed" = "Red", "STAside"="Yellow" )
+
+Histolabels2<-c("STOFF" = "Baseline: ST OFF, No Intervention", 
+                "OFFWash"  = "ST OFF, Wash ON", 
+                "OFFWr" ="ST OFF, Wrapping ON", 
+                "STON"="ST ON, No Intervention", 
+                "ONwash" =  "ST ON, Wash ON",
+                "ONWr" =  "ST ON, Wrapping ON",
+                "Exc"=  "STON, Ill Exclusion",
+                "XSTClosed" = "Re-service off",
+                "STAside"= "STAside"
+               )
+
+Histolabels3<-c("STOFF" = "Baseline: ST OFF, No Intervention", 
+                "OFFWash"  = "ST OFF, Wash ON", 
+                "STON"="ST ON, No Intervention", 
+                "ONwash" =  "ST ON, Wash ON"
+               )
+
+
+Histolabels4<-c("STOFF" = "Baseline: ST OFF, No Intervention", 
+                "OFFWash"  = "ST OFF, Wash ON",
+                "OFFWr" ="ST OFF, Wrapping ON", 
+                "STON"="ST ON, No Intervention", 
+                "ONwash" =  "ST ON, Wash ON",
+                "ONWr" =  "ST ON, Wrapping ON"
+               )
+
+Dose_Hist_Stacked<-ggplot(data = binded_prevalences, mapping = aes(x= Prev, fill=factor(Int,c('STOFF','OFFWash', 'OFFWr',  'STON', 'ONwash',  'ONWr', 'Exc','XSTClosed', 'STAside') )))+
+  geom_histogram(bins=15,boundary = .001,color= "black")+
+  xlab(label = "Illness prevalence (%)")+
+  ylab(label = "Observation Count")+
+  ggtitle("Illness prevalence, comparing Interventions")+ 
+  theme(plot.title = element_text(hjust = 0.5))+
+  labs(fill = "Intervention")+
+  scale_fill_manual(values = colors_12, labels = Histolabels2)
+
+ggsave(filename = "Dose_Hist_Stacked3.png", path = pathfolder,width = 10,height = 6,)
+print(Dose_Hist_Stacked)
+
+
+Facet_DR_Hist<-ggplot(data = binded_prevalences, mapping = aes(x= Prev))+
+  geom_histogram(bins=15,boundary = .001, color= "black")+
+  facet_wrap(~factor(Int,c('STOFF','OFFWash', 'OFFWr',  'STON', 'ONwash',  'ONWr', 'Exc', 'XSTClosed', 'STAside')),  labeller = as_labeller(Histolabels2))+
+  scale_fill_manual( values =  colors_12)+
+  xlab(label = "Illness prevalence (%)")+
+  ylab(label = "Observation Count")+
+  ggtitle("Illness prevalence, comparing Interventions")+ 
+  theme(plot.title = element_text(hjust = 0.5))+
+  labs(fill = "Intervention")
+  
+  
+ggsave(filename = "Facet_DR_Hist3.png", path = pathfolder,width = 10,height = 10,)
+print(Facet_DR_Hist)
+
+Facet_Washing_Hist<-ggplot(data = binded_prevalences_Wash, mapping = aes(x= Prev))+
+  geom_histogram(bins=15,boundary = .001, color= "black")+
+  facet_wrap(~factor(Int,c('STOFF','OFFWash'  ,'STON', 'ONwash')),  labeller = as_labeller(Histolabels3))+
+  xlab(label = "Illness prevalence (%)" )+
+  ylab(label = "Observation Count")+
+  ggtitle("Illness prevalence, comparing Interventions")+ 
+  theme(plot.title = element_text(hjust = 0.5))+
+  labs(fill = "Intervention")
+  
+  
+ggsave(filename = "Facet_Washing_Hist.png", path = pathfolder,width = 10,height = 8,)
+print(Facet_DR_Hist)
+
+
+Facet_WaWr_Hist<-ggplot(data = binded_prevalences_WashWr, mapping = aes(x= Prev))+
+  geom_histogram(bins=15,boundary = .001, color= "black")+
+  facet_wrap(~factor(Int,c('STOFF','OFFWash'  ,'OFFWr','STON', 'ONwash','ONWr' )),  labeller = as_labeller(Histolabels4))+
+  xlab(label = "Illness prevalence (%)" )+
+  ylab(label = "Observation Count")+
+  ggtitle("Illness prevalence, comparing Interventions")+ 
+  theme(plot.title = element_text(hjust = 0.5))+
+  labs(fill = "Intervention")
+  
+  
+ggsave(filename = "Facet_WashingWr_Hist.png", path = pathfolder,width = 10,height = 8,)
+print(Facet_DR_Hist)
+
+
+
+binded_prevalences_Tail<-binded_prevalences[binded_prevalences$Prev>2,]
+
+Tails_prev<-ggplot(data = binded_prevalences_Tail, mapping = aes(x= Prev, fill=factor(Int,c('STOFF','OFFWash', 'OFFWr',  'STON', 'ONwash',  'ONWr','Exc','XSTClosed', 'STAside') )))+
+  geom_histogram(bins=10,color= "black")+
+  xlab(label = "Illness prevalence (%)")+
+  ylab(label = "Observation Count")+
+  ggtitle("Illness prevalence, comparing Interventions")+ 
+  theme(plot.title = element_text(hjust = 0.5))+
+  labs(fill = "Intervention")+
+  scale_fill_manual(values = colors_12, labels = c('STOFF'="Baseline: ST OFF, No Intervention", 
+                                                     'OFFWash'= "ST OFF, Wash ON",
+                                                      'OFFWr'="ST OFF, Wrapping ON",
+                                                       'STON'= "ST ON, No Interventions",
+                                                        'ONwash'="ST ON, Wash ON",
+                                                        'ONWr'="ST OFF, Wrapping ON",
+                                                        'Exc'="STON, Ill Exclusion",
+                                                        "Re-service off",
+                                                        "STAside"= "STAside"))
+
+ggsave(filename = "Tails_prev3.png", path = pathfolder,width = 10,height = 6,)
+print(Tails_prev)
+
+
+binded_prevalences_Tail3<-binded_prevalences[binded_prevalences$Prev>3,]
+
+Tails_prev3<-ggplot(data = binded_prevalences_Tail3, mapping = aes(x= Prev, fill=factor(Int,c('STOFF','OFFWash', 'OFFWr',  'STON', 'ONwash',  'ONWr','Exc','XSTClosed', 'STAside') )))+
+  geom_histogram(bins=10,color= "black")+
+  xlab(label = "Illness prevalence (%)")+
+  ylab(label = "Observation Count")+
+  ggtitle("Illness prevalence, comparing Interventions")+ 
+  theme(plot.title = element_text(hjust = 0.5))+
+  labs(fill = "Intervention")+
+  scale_fill_manual(values = colors_12, labels = c('STOFF'="Baseline: ST OFF, No Intervention", 
+                                                     'OFFWash'= "ST OFF, Wash ON",
+                                                      'OFFWr'="ST OFF, Wrapping ON",
+                                                       'STON'= "ST ON, No Interventions",
+                                                        'ONwash'="ST ON, Wash ON",
+                                                        'ONWr'="ST OFF, Wrapping ON",
+                                                        'Exc'="STON, Ill Exclusion",
+                                                        "Re-service off",
+                                                        "STAside"= "STAside"))
+
+ggsave(plot = Tails_prev3,filename = "Tails_prev_3.png", path = pathfolder,width = 10,height = 6,)
+print(Tails_prev3)
+
+
+VIolinPlot<-ggplot(data = binded_prevalences, mapping = aes(y= Prev, x=factor(Int,c('STOFF','OFFWash', 'OFFWr',  'STON', 'ONwash',  'ONWr','Exc','XSTClosed', 'STAside') ), fill=factor(Int,c('STOFF','OFFWash', 'OFFWr',  'STON', 'ONwash',  'ONWr','Exc','XSTClosed','STAside') )))+
+  geom_violin()+
+  geom_boxplot(width=0.1)+
+  labs(fill = "Intervention")+
+  xlab(label = "Intervention")+
+  scale_fill_manual(values = colors_12, labels = c("Baseline: ST OFF, No Intervention", 
+                                                   "ST OFF, Wash ON",
+                                                   "ST OFF, Wrapping ON",
+                                                   "ST ON, No Interventions",
+                                                   "ST ON, Wash ON",
+                                                   "ST OFF, Wrapping ON",
+                                                   "STON, Ill Exclusion",
+                                                   "Re-service off",
+                                                   "STAside"= "STAside"))
+
+ggsave(filename = "Violin3.png",path = pathfolder,width = 10,height = 8,)
+print(VIolinPlot)
+
+```
+
+
+
+
+```{r}
+ST_STClosed_Analysis_Con<-func_remove_repeats(Individual_Analysis_Fr_STClosed)
+ST_STClosed_Analysis_Con$Type<-"Closed"
+
+
+Combined_Closed_Analysis<-Func_DF_Locations_2()
+```
+
+```{r}
+ggplot(data =Combined_Closed_Analysis, aes(x = Type,fill=Location)  )+
+  geom_bar()+
+  geom_text(stat = "count",aes(label=..count..),position = position_stack(vjust = .5))+
+  xlab("Number of Fruit Items")+
+  ylab("Intervention")+
+  ggtitle("Share Table Interventions: Items Consumed vs Wasted")+ 
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_x_discrete(labels=c("XClosed"="Re-Service Off",
+                          "OFF" = "STOFF",
+                          "ON"= "STON",
+                          'XAside' = 'ST ON: Wash before Serving',
+                          'XExc' = 'Ill Exclusion'
+                          ))
+
+
+ggsave(filename = "FoodSecFin3.png", path = pathfolder,width = 10,height = 8,)
+
+```
+
+
+#Food Waste Analysis With Locations Figure 2
+```{r}
+
+Treatments_FW<-c("OFF","ON", "XClosed", "XExc", "XAside")
+
+FoodWaste_Analysis<-data.frame(
+  "Treatment"=Treatments_FW
+)
+
+FoodWaste_Analysis<-data.frame(
+  "Treatment"=Treatments_FW,
+  "TotalFruit"="",
+  "TotalConsumed"="",
+  "TotalDiscarded"="",
+  "TotalReserviced"="",
+  "ConsumedSel"="", 
+  "ConsumedST" ="",
+  "Reserviced Consumed"="",
+  "Reserviced Landfilled"="",
+  stringsAsFactors = FALSE
+)
+
+DF_Con_Trial<-func_remove_repeats(Individual_Analysis_Fr_CopON)
+sum(DF_Con_Trial$Reserviced>0 & DF_Con_Trial$Location=="Discarded")
+
+FoodWaste_Analysis[1,2:9]<-Function_FoodWaste_Full_Alt(Individual_Analysis_Fr_CopOFF)
+FoodWaste_Analysis[2,2:9]<-Function_FoodWaste_Full_Alt(Individual_Analysis_Fr_CopON)
+FoodWaste_Analysis[3,2:9]<-Function_FoodWaste_Full_Alt(Individual_Analysis_Fr_STClosed)
+FoodWaste_Analysis[4,2:9]<-Function_FoodWaste_Full_Alt(Individual_Analysis_Fr_CopExc)
+FoodWaste_Analysis[5,2:9]<-Function_FoodWaste_Full_Alt(Individual_Analysis_Fr_CopSTAside)
+
+
+#FoodWaste_Analysis<-Function_FoodWaste_Full()
+
+FoodWaste_Analysis_melted<-melt(data =FoodWaste_Analysis,id = "Treatment" )
+
+FoodWaste_Analysis_melted$value<- as.numeric(FoodWaste_Analysis_melted$value)
+
+FoodWaste_Analysis_melted<-FoodWaste_Analysis_melted[FoodWaste_Analysis_melted$variable != "TotalFruit",]
+FoodWaste_Analysis_melted<-FoodWaste_Analysis_melted[FoodWaste_Analysis_melted$variable != "TotalConsumed",]
+
+FoodWaste_Analysis_melted<-FoodWaste_Analysis_melted[FoodWaste_Analysis_melted$value != 0,]
+
+FoodWaste_Analysis_melted<-FoodWaste_Analysis_melted[FoodWaste_Analysis_melted$Treatment != "XExc",]
+
+FoodWaste_Analysis_melted_No_RS<-FoodWaste_Analysis_melted%>%
+filter(variable != "TotalReserviced") %>% 
+group_by(Treatment) %>% 
+mutate(pct=prop.table(value))
+
+FoodWaste_Analysis_melted_PCT<-FoodWaste_Analysis_melted_No_RS%>% 
+group_by(Treatment) %>% 
+mutate(pct=prop.table(value)) 
+
+FoodWaste_Analysis_melted_PCT$pct<-  round(FoodWaste_Analysis_melted_PCT$pct,3)
+
+
+
+labelsFW <-c("TotalReserviced" = "Items Re-serviced", 
+            "TotalDiscarded"  = "Landfilled", 
+            "ConsumedSel" ="Consumed from service line", 
+            "ConsumedST"="Consumed from share table",
+            "Reserviced.Consumed" = "Reserviced and Consumed",
+            "ReservicedLandfilled" = "Reserviced and Landfilled"
+               )
+
+#Initial without percentages
+ggplot(data = FoodWaste_Analysis_melted, aes(x= Treatment,y=value, fill= factor(variable, levels  = c("Reserviced.Consumed", "Reserviced.Landfilled","TotalReserviced", "TotalDiscarded", "ConsumedSel", "ConsumedST"))))+
+  geom_col()+
+  scale_x_discrete(labels=c("XClosed"="Re-Service Off",
+                          "OFF" = "Traditional",
+                          "ON"= "Share Table",
+                          'XAside' = 'One-way ST',
+                          'XExc' = 'Ill Exclusion'
+                          ))+
+  ylab("Number of Items")+
+  xlab("Scenario Name")+
+  theme_bw()+
+  labs(fill = "Locations")+
+  ggtitle("Food Security: Item final location per scenario")+ 
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(text = element_text(size=15))+
+  scale_fill_grey(name = "Location Categories", labels = labelsFW, start = 0.3, end =0.8)+
+  theme(legend.position="right")+
+  geom_text(aes(label=value), size=5, position= position_stack(vjust=0.5))+
+  
+
+
+ggsave(filename = "FoodSecFin4.png", path = "D:/Poster Outs",width = 10,height = 8,)
+
+
+
+
+#With Percentages Figure 2
+ggplot(data = FoodWaste_Analysis_melted_PCT, aes(x= Treatment,y=value, fill= factor(variable, levels  = c("Reserviced.Consumed", "Reserviced.Landfilled","TotalReserviced", "TotalDiscarded", "ConsumedSel", "ConsumedST"))))+
+  geom_col()+
+  scale_x_discrete(labels=c("XClosed"="Re-Service Off",
+                          "OFF" = "Traditional",
+                          "ON"= "Share Table",
+                          'XAside' = 'One-way ST',
+                          'XExc' = 'Ill Exclusion'
+                          ))+
+  ylab("Number of Items")+
+  xlab("Scenario Name")+
+  theme_bw()+
+  labs(fill = "Locations")+
+  ggtitle("Food Security: Item final location per scenario")+ 
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(text = element_text(size=15))+
+  scale_fill_grey(name = "Location Categories", labels = labelsFW, start = 0.3, end =0.8)+
+  theme(legend.position="right")+
+  #geom_text(aes(label=value), size=5, position= position_stack(vjust=0.5))+
+  geom_text(aes(label = scales::percent(pct,accuracy = 0.1)),position= position_stack(vjust=0.7),col="black",size=5)
+
+  ggsave(filename = "FoodSecFin4.png", path = "C:/Users/Gustavo Reyes/Box/Share Table Project/QMRA Files/QMRA Paper/MRA Submission/Figures-R1",width = 10,height = 8,)
+
+
+FoodWaste_Analysis_melted_2<-FoodWaste_Analysis_melted[FoodWaste_Analysis_melted$Treatment != "XAside",]
+FoodWaste_Analysis_melted_2<-FoodWaste_Analysis_melted_2[FoodWaste_Analysis_melted_2$Treatment != "XExc",]
+FoodWaste_Analysis_melted_2<-FoodWaste_Analysis_melted_2[FoodWaste_Analysis_melted_2$Treatment != "XClosed",]
+
+
+
+
+ggplot(data = FoodWaste_Analysis_melted_2, aes(x= Treatment,y=value, fill= factor(variable, levels  = c("TotalReserviced", "TotalDiscarded", "ConsumedSel", "ConsumedST"))))+
+  geom_col()+
+  scale_x_discrete(labels=c("OFF" = "STOFF",
+                          "ON"= "STON"
+                          ))+
+  ylab("Number of Fruit")+
+  xlab("Intervention")+
+  labs(fill = "Locations")+
+  ggtitle("Share Table Interventions: Items Consumed vs Wasted")+ 
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme(text = element_text(size=15))
+
+
+ggsave(filename = "FoodSecFin6.png", path = "D:\Poster Outs",width = 8,height = 8,)
+
+
+```
+
+
